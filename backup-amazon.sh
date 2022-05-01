@@ -1,7 +1,12 @@
 #!/bin/bash
 
+#Caminho/diretorio onde será feito o backup
+CAMINHO_BKP=
+#Nome do bucket na AWS
+NOME_BUCKET=
+#Nome do Banco de dados
+BANCO_DADOS=
 
-CAMINHO_BKP=/home/deividandrade/backup_mutillidae_amazon
 cd $CAMINHO_BKP
 
 data=$(date +%F)
@@ -13,10 +18,10 @@ then
 fi
 
 #filtrando somente os nomes das tabelas e fazendo o dump para o diretorio com a data
-tabelas=$(mysql -u root mutillidae -e "show tables;" | grep -v Tables)
+tabelas=$(mysql -u root $BANCO_DADOS -e "show tables;" | grep -v Tables)
 for tabela in $tabelas
 do
-	mysqldump -u root mutillidae $tabela > $CAMINHO_BKP/$data/$tabela.sql
+	mysqldump -u root $BANCO_DADOS $tabela > $CAMINHO_BKP/$data/$tabela.sql
 done
 
-aws s3 sync $CAMINHO_BKP s3://backup-sql12
+aws s3 sync $CAMINHO_BKP s3://$NOME_BUCKET

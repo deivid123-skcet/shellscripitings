@@ -1,15 +1,17 @@
 #!/bin/bash
 
-CAMINHO_HOME=/home/deividandrade/
+#Diretorio onde será feito o backup
+CAMINHO=
 
-cd $CAMINHO_HOME
+cd $CAMINHO
 
+#Cria diretorio caso não exista
 if [ ! -d backup ]
 then
 	mkdir backup
 fi
 
-mysqldump -u root $1 > $CAMINHO_HOME/backup/$1.sql
+mysqldump -u root $1 > $CAMINHO/backup/$1.sql
 
 if [ $?  -eq 0 ]
 then
